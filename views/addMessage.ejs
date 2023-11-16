@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Only</title>
+</head>
+<style>
+    body {
+        font-family: arial;
+        margin: 0;
+    }
+    .headerContainer {
+        display: flex;
+        justify-content: space-between;
+        background: #50114d;
+        padding: 20px 30px;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    nav a {
+        color: #fff;
+        font-size: 18px;
+        background: rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+    h1 {
+        color: rgb(110, 189, 199);
+    }
+      .welcome {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .welcome p {
+        font-size: 18px;
+        color: #333;
+        margin: 0;
+    }
+
+    .welcome a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .welcome a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <div class="headerContainer">
+        <h1>Members only</h1>
+        <nav>
+            <p class="link"><a href="/auth/logout">Log out</a></p>
+        </nav>
+    </div>
+    <div class="welcome">
+        <p>You must <a href="/become-member">become a member</a> to create messages</p>
+    </div>
+</body>
+
+</html>

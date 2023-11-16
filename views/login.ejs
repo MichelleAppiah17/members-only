@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Only </title>
+    <style>
+        body {
+            font-family: arial;
+            margin: 0;
+        }
+
+        .headerContainer {
+            display: flex;
+            justify-content: space-between;
+            background: #50114d;
+            padding: 20px 30px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        main,
+        header {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 0 10px;
+            color: #333;
+        }
+
+        h1 {
+            color: rgb(110, 189, 199);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="headerContainer">
+        <h1>Members only</h1>
+        <nav>
+            <p class="link"><a href="/auth/login">Log In</a></p>
+            <p class="link"><a href="/auth/sign-up">Sign Up</a></p>
+        </nav>
+    </div>
+    <h2>Log in</h2>
+    <form action="/auth/login" method="POST">
+        <label for="username">User name</label>
+        <input name="username" type="text" />
+        <label for="password">Password</label>
+        <input name="password" type="password" />
+        <% if (messages && messages.length> 0) { %>
+            <% messages.forEach(message=> { %>
+                <p class="error-message">
+                    <%= message %>
+                </p>
+                <% }); %>
+                    <% } %>
+    
+     <button>Log in</button>
+     <p>No Account? <a href="/auth/sign-up">Create One</a></p>
+    </form>
+</body>
+
+</html>

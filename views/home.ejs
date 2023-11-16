@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Only</title>
+</head>
+     <style>
+        body{
+            font-family: arial;
+            margin: 0;
+        }
+        .headerContainer{
+            display: flex;
+            justify-content: space-between;
+            background: #50114d;
+            padding: 20px 30px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        h1 {
+            color: rgb(110, 189, 199);
+        }
+        main , header{
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 0 10px;
+            color: #333;
+        }
+     </style>
+<body>
+    <div class="headerContainer">
+        <h1>Members only</h1>
+        <nav>
+            <p class="link"><a href="/auth/login">Log In</a></p>
+            <p class="link"><a href="/auth/sign-up">Sign Up</a></p>
+        </nav>
+    </div>
+    <header>
+        <h1>Homepage</h1>
+    </header>
+    <main>
+        <p>Welcome!!!</p>
+    </main>
+</body>
+</html>
