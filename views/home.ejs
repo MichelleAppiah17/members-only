@@ -15,6 +15,8 @@
             justify-content: space-between;
             background: #50114d;
             padding: 20px 30px;
+            position: sticky;
+            top: 0;
         }
         nav {
             display: flex;
@@ -105,21 +107,19 @@
             <%= title %>
         </h1>
         <p class="note">Note: You must be a member to view the post's author and date of creation.</p>
-        <ul class="message-list">
-            <% messages.map(function(message) { %>
+        <div class="message-list">
+            <% messages.forEach(function(message) { %>
                 <div class="message-container">
                     <p class="message-text">
                         <%= message.message %>
                     </p>
                     <div class="user-heading-text">
-                        <p class="message-user"><strong>
-                            Post by: <%= message.user %>
-                            </strong></p>
-                        <p class="message-time">Date: <em>(<%= message.added %>)</em></p>
+                        <p>Post by: <strong>#######</strong></p>
+                        <p class="message-time">Date: <em> #######</em></p>
                     </div>
                 </div>
                 <% }); %>
-        </ul>
+        </div>
     </div>
 </body>
 </html>

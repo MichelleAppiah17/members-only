@@ -22,6 +22,14 @@ const User = mongoose.model(
   })
 );
 
+const messageSchema = new Schema({
+  user: { type: String, required: true },
+  message: { type: String, required: true },
+  added: { type: Date, default: Date.now }
+});
+
+const Message = mongoose.model("Message", messageSchema);
+
 const app = express();
 app.set("views", path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
@@ -30,7 +38,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(flash());
-
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -73,28 +80,48 @@ app.use((req, res, next) => {
   next();
 });
 
+const authenticateAndCheckPasscode = (req, res, next) => {
+    if (req.isAuthenticated() && req.session.isPasscodeCorrect) {
+        return next(); 
+    } else {
+        res.redirect('/auth/login'); 
+    }
+};
+
+const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/auth/login'); 
+    }
+};
+
 const authRoutes = require('./routes/authRoutes');
 app.use('/auth', authRoutes);
 
-const messages= [
-  {
-    user: "Roise",
-    message: 'Hey there!',
-    added: new Date()
-  },
-  {
-    user: 'Mimi',
-    message: 'What\'s up?',
-    added: new Date()
-  },
-]
+app.use(['/new-message', '/add-message', '/become-member', '/new-member-message', '/member'], isLoggedIn);
 
-app.get('/', (req, res) => {
-    res.render('home', { title: 'Member Posts', messages: messages });
+app.get('/', async (req, res) => {
+    try {
+        const messages = await Message.find({}); 
+        const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
+        res.render('home', { title: 'Member Posts', messages: messages, isPasscodeCorrect: isPasscodeCorrect });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.get('/new-message', (req,res) => {
-    res.render('newMessage', { title: 'Member Posts', messages: messages });
+app.get('/new-message', async (req, res) => {
+    try {
+        const messages = await Message.find({}); 
+        const usernameData = req.user ? req.user.username : '';
+        const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
+        res.render('newMessage', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect: isPasscodeCorrect });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/add-message', (req, res) => {
@@ -110,21 +137,41 @@ app.post('/become-member', (req, res) => {
     const secretPasscode = process.env.SECRET_PASSCODE; 
 
     if (enteredPasscode === secretPasscode) {
+        req.session.isPasscodeCorrect = true;
         res.redirect('/new-member-message');
     } else {
         res.render('becomeMember', { error: 'Invalid member passcode' });
     }
 });
 
-app.post('/new-member-message', function(req, res, next) {
-  const userName = req.body.messageUser;
-  const message = req.body.messageMessage;
-  messages.push({ message: message, user: userName, added: new Date() });
-  res.redirect('/');
+app.get('/member', authenticateAndCheckPasscode, async (req, res) => {
+    try {
+        const messages = await Message.find({}); 
+        const usernameData = req.user ? req.user.username : ''; 
+        const secretPasscode = process.env.SECRET_PASSCODE;
+        const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
+        res.render('member', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect: isPasscodeCorrect });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/new-member-message', function(req, res, next) {
   res.render('messageForm', { title: 'New Message' });
+});
+
+app.post('/new-member-message',authenticateAndCheckPasscode, async function(req, res) {
+  try {
+    const userName = req.body.messageUser;
+    const message = req.body.messageMessage;
+    const newMessage = new Message({ message: message, user: userName });
+    await newMessage.save();
+    res.redirect('/member'); // Redirect to the member page after adding the message
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 app.post("/auth/sign-up", async (req, res, next) => {

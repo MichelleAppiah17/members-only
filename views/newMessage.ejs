@@ -16,6 +16,8 @@
             justify-content: space-between;
             background: #50114d;
             padding: 20px 30px;
+            position: sticky;
+            top: 0;
         }
 
         nav {
@@ -38,38 +40,43 @@
         h1 {
             color: rgb(110, 189, 199);
         }
-         .welcome {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        padding: 20px;
-        border-radius: 5px;
-        text-align: center;
-    }
+        .welcome {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
 
-    .welcome p {
-        font-size: 18px;
-        color: #333;
-        margin: 10px 0;
-    }
+        .welcome p {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
 
-    .newMessage {
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
+        .newMessage {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .newMessage a {
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-    }
+        .newMessage a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 7%;
+        }
 
-    .newMessage a:hover {
-        text-decoration: underline;
-    } 
-    .messagesDiv{
+        .newMessage a:hover {
+            text-decoration: underline;
+        } 
+        .messagesDiv{
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             padding: 20px;
@@ -127,7 +134,12 @@
         </nav>
     </div>
     <div class="welcome">
-        <p>Welcome back, (Your Name)</p>
+        <% if (username) { %>
+            <p>Welcome back, <strong><%= username %></strong>
+            </p>
+            <% } else { %>
+                <p>Welcome back</p>
+                <% } %>
         <button class="newMessage"><a href="/add-message" >+ New Message</a></button>
     </div>
     <div class="messagesDiv">
@@ -135,21 +147,19 @@
             <%= title %>
         </h1>
         <p class="note">Note: You must be a member to view the post's author and date of creation.</p>
-        <ul class="message-list">
-            <% messages.map(function(message) { %>
+        <div class="message-list">
+            <% messages.forEach(function(message) { %>
                 <div class="message-container">
                     <p class="message-text">
                         <%= message.message %>
                     </p>
                     <div class="user-heading-text">
-                        <p class="message-user"><strong>
-                                Post by: <%= message.user %>
-                            </strong></p>
-                        <p class="message-time">Date: <em>(<%= message.added %>)</em></p>
+                        <p>Post by: <strong>#######</strong></p>
+                        <p class="message-time">Date: <em> #######</em></p>
                     </div>
                 </div>
                 <% }); %>
-        </ul>
+        </div>
     </div>
 </body>
 </html>

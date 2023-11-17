@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Only</title>
+</head>
+<style>
+    body {
+        font-family: arial;
+        margin: 0;
+    }
+
+    .headerContainer {
+        display: flex;
+        justify-content: space-between;
+        background: #50114d;
+        padding: 20px 30px;
+        position: sticky;
+        top: 0;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    nav a {
+        color: #fff;
+        font-size: 18px;
+        background: rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    nav a:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    h1 {
+        color: rgb(110, 189, 199);
+    }
+
+    .welcome {
+        font-family: Arial, sans-serif;
+        background-color: rgb(247, 233, 242);
+        padding: 20px;
+        text-align: center;
+    }
+    .newMessage {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        position: sticky;
+        top: 7%;
+    }
+
+    .newMessage a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        position: sticky;
+        top: 7%;
+    }
+
+    .newMessage a:hover {
+        text-decoration: underline;
+    }
+
+    .messagesDiv {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: rgb(206, 134, 182);
+    }
+
+    .main-header {
+        color: #333;
+        text-align: center;
+    }
+    .message-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgb(236, 200, 220);
+        margin: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .message-list {
+        list-style: none;
+        padding: 0 2%;
+    }
+
+    .message-text {
+        color: #333;
+        margin: 0;
+    }
+
+    .user-heading-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .message-user {
+        color: hsl(90, 1%, 27%);
+        margin-bottom: 10px;
+    }
+
+    .message-time {
+        color: #888;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <div class="headerContainer">
+        <h1>Members only</h1>
+        <nav>
+            <p class="link"><a href="/">Log out</a></p>
+        </nav>
+    </div>
+    <div class="welcome">
+        <% if (username) { %>
+            <p><strong>
+                    <%= username %>
+                </strong>
+                , you are now a member!
+            </p>
+            <% } else { %>
+                <p>Welcome back</p>
+                <% } %>
+                    <button class="newMessage"><a href="/new-member-message">+ New Message</a></button>
+    </div>
+    <div class="messagesDiv">
+        <h1 class="main-header">
+            <%= title %>
+        </h1>
+        <div class="message-list">
+            <% messages.forEach(function(message) { %>
+                <div class="message-container">
+                    <p class="message-text">
+                        <%= message.message %>
+                    </p>
+                    <div class="user-heading-text">
+                        <p class="message-user"><strong>Post by: <%= message.user %></strong></p>
+                        <p class="message-time">Date: <em>(<%= message.added %>)</em></p>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+</body>
+
+</html>
