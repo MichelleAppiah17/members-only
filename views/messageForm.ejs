@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .return-button,
+        .send-message-header {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .return-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .return-button:hover {
+            background-color: #072235;
+        }
+
+        .send-message-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        #submit-button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #submit-button:hover {
+            background-color: #043516;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/"><button class="return-button">Take me Back</button></a>
+    <h1 class="send-message-header">Send a Message:</h1>
+    <form method="POST" action="/new-member-message" class="send-message-form">
+        <label for="user-name">Your Name:</label>
+        <input type="text" name="messageUser" required id="user-name">
+
+        <label for="user-message">Your Message:</label>
+        <input type="text" name="messageMessage" required id="user-message">
+
+        <button id="submit-button">Send</button>
+    </form>
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
@@ -75,12 +76,25 @@ app.use((req, res, next) => {
 const authRoutes = require('./routes/authRoutes');
 app.use('/auth', authRoutes);
 
+const messages= [
+  {
+    user: "Roise",
+    message: 'Hey there!',
+    added: new Date()
+  },
+  {
+    user: 'Mimi',
+    message: 'What\'s up?',
+    added: new Date()
+  },
+]
+
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home', { title: 'Member Posts', messages: messages });
 });
 
 app.get('/new-message', (req,res) => {
-    res.render('newMessage');
+    res.render('newMessage', { title: 'Member Posts', messages: messages });
 });
 
 app.get('/add-message', (req, res) => {
@@ -88,7 +102,29 @@ app.get('/add-message', (req, res) => {
 });
 
 app.get('/become-member', (req, res) => {
-    res.render('becomeMember');
+    res.render('becomeMember', { error: null });
+});
+
+app.post('/become-member', (req, res) => {
+    const enteredPasscode = req.body.membership;
+    const secretPasscode = process.env.SECRET_PASSCODE; 
+
+    if (enteredPasscode === secretPasscode) {
+        res.redirect('/new-member-message');
+    } else {
+        res.render('becomeMember', { error: 'Invalid member passcode' });
+    }
+});
+
+app.post('/new-member-message', function(req, res, next) {
+  const userName = req.body.messageUser;
+  const message = req.body.messageMessage;
+  messages.push({ message: message, user: userName, added: new Date() });
+  res.redirect('/');
+});
+
+app.get('/new-member-message', function(req, res, next) {
+  res.render('messageForm', { title: 'New Message' });
 });
 
 app.post("/auth/sign-up", async (req, res, next) => {

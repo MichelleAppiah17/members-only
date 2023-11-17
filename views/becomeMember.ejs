@@ -40,68 +40,69 @@
         h1 {
             color: rgb(110, 189, 199);
         }
-        
-.becomeMember {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    text-align: center;
-}
+                
+        .becomeMember {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
 
-.becomeMember p {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 20px;
-}
+        .becomeMember p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-.becomeMember a {
-    color: #007bff;
-    text-decoration: none;
-}
+        .becomeMember a {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-.becomeMember a:hover {
-    text-decoration: underline;
-}
+        .becomeMember a:hover {
+            text-decoration: underline;
+        }
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-label {
-    margin-bottom: 10px;
-}
+        label {
+            margin-bottom: 10px;
+        }
 
-input[type="text"] {
-    width: 250px;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
+        input[type="password"] {
+            width: 250px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
-    </style>
+        button:hover {
+            background-color: #0056b3;
+        }
+    
+ </style>
 <body>
     <div class="headerContainer">
         <h1>Members only</h1>
         <nav>
-            <p class="link"><a href="/auth/logout">Log out</a></p>
+            <p class="link"><a href="/">Log out</a></p>
         </nav>
     </div>
     <div class="becomeMember">
@@ -109,9 +110,14 @@ button:hover {
             By becoming a member, you will be able to post messages and see the author and date of each message.
             (See the passcode at <a href="https://github.com/MichelleAppiah17/members-only">https://github.com/MichelleAppiah17/members-only</a>)
         </p>
-        <form>
+        <form action="/become-member" method="POST">
             <label for="membership">Enter secret passcode</label>
-            <input name="membership" type="text" />
+            <input name="membership" type="password" />
+            <% if (error) { %>
+                <p style="color: red;">
+                    <%= error %>
+                </p>
+                <% } %>
             <button>Become a Member</button>
         </form>
     </div>
