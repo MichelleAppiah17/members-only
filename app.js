@@ -103,7 +103,7 @@ app.use(['/new-message', '/add-message', '/become-member', '/new-member-message'
 
 app.get('/', async (req, res) => {
     try {
-        const messages = await Message.find({}); 
+        const messages = await Message.find({}).sort({ added: -1 }); 
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
         res.render('home', { title: 'Member Posts', messages: messages, isPasscodeCorrect: isPasscodeCorrect });
     } catch (err) {
@@ -114,7 +114,7 @@ app.get('/', async (req, res) => {
 
 app.get('/new-message', async (req, res) => {
     try {
-        const messages = await Message.find({}); 
+        const messages = await Message.find({}).sort({ added: -1 }); 
         const usernameData = req.user ? req.user.username : '';
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
         res.render('newMessage', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect: isPasscodeCorrect });
@@ -146,7 +146,7 @@ app.post('/become-member', (req, res) => {
 
 app.get('/member', authenticateAndCheckPasscode, async (req, res) => {
     try {
-        const messages = await Message.find({}); 
+        const messages = await Message.find({}).sort({ added: -1 }); 
         const usernameData = req.user ? req.user.username : ''; 
         const secretPasscode = process.env.SECRET_PASSCODE;
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
