@@ -88,6 +88,10 @@
         button:hover {
             background-color: #0056b3;
         }
+         .error{
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -95,23 +99,34 @@
     <div class="headerContainer">
         <h1>Members only</h1>
         <nav>
-                <p class="link"><a href="/auth/login">Log In</a></p>
-                <p class="link"><a href="/auth/sign-up">Sign Up</a></p>
+                <p class="link"><a href="/auth/login">LogIn</a></p>
+                <p class="link"><a href="/auth/sign-up">SignUp</a></p>
         </nav>
     </div>
     <h2>Sign Up</h2>
-    <form action="/auth/sign-up" method="POST">
-        <label for="username">User name</label>
-        <input name="username" type="text" required />
-        <label for="displayname">Display name</label>
-        <input name="displayname" placeholder="eg: Mimi" type="text" required />
-        <label for="password">Password</label>
-        <input name="password" type="password" required />
-        <label for="confirmPassword">Confirm Password</label>
-        <input name="confirmPassword" type="password" required/>
-        <button>Sign Up</button>
-        <p>Have an Account? <a href="/auth/login">Log in</a></p>
-    </form>
+<form action="/auth/sign-up" method="POST">
+    <% if (messages.accountError && messages.accountError.length> 0) { %>
+        <p class="error">
+            <%= messages.accountError %>
+        </p>
+        <% } %>
+            <label for="username">User name</label>
+            <input name="username" type="text" required />
+            <label for="displayname">Display name</label>
+            <input name="displayname" placeholder="eg: Mimi" type="text" required />
+            <label for="password">Password</label>
+            <input name="password" type="password" required />
+            <% if (messages.passwordError && messages.passwordError.length> 0) { %>
+                <p class="error">
+                    <%= messages.passwordError %>
+                </p>
+                <% } %>
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input name="confirmPassword" type="password" required />
+                    <button>Sign Up</button>
+                    <p>Have an Account? <a href="/auth/login">Log in</a></p>
+</form>
+
 </body>
 
 </html>

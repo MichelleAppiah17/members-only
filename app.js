@@ -104,20 +104,35 @@ app.use(['/new-message', '/add-message', '/become-member', '/new-member-message'
 app.get('/', async (req, res) => {
     try {
         const messages = await Message.find({}); 
+        const formattedMessages = messages.map(message => {
+            return {
+                user: message.user,
+                message: message.message,
+                added: Date.parse(message.added) 
+            };
+        });
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
-        res.render('home', { title: 'Member Posts', messages: messages, isPasscodeCorrect: isPasscodeCorrect });
+        res.render('home', { title: 'Member Posts', messages: formattedMessages, isPasscodeCorrect });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
     }
 });
 
+
 app.get('/new-message', async (req, res) => {
     try {
         const messages = await Message.find({}); 
+        const formattedMessages = messages.map(message => {
+            return {
+                user: message.user,
+                message: message.message,
+                added: Date.parse(message.added) 
+            };
+        });
         const usernameData = req.user ? req.user.username : '';
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
-        res.render('newMessage', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect: isPasscodeCorrect });
+        res.render('newMessage', { title: 'Member Posts', messages: formattedMessages, username: usernameData, isPasscodeCorrect });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -150,7 +165,16 @@ app.get('/member', authenticateAndCheckPasscode, async (req, res) => {
         const usernameData = req.user ? req.user.username : ''; 
         const secretPasscode = process.env.SECRET_PASSCODE;
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
-        res.render('member', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect: isPasscodeCorrect });
+
+        const formattedMessages = messages.map(message => {
+            return {
+                user: message.user,
+                message: message.message,
+                added: message.added.toLocaleString() 
+            };
+        });
+
+        res.render('member', { title: 'Member Posts', messages: formattedMessages, username: usernameData, isPasscodeCorrect });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -167,23 +191,38 @@ app.post('/new-member-message',authenticateAndCheckPasscode, async function(req,
     const message = req.body.messageMessage;
     const newMessage = new Message({ message: message, user: userName });
     await newMessage.save();
-    res.redirect('/member'); // Redirect to the member page after adding the message
+    res.redirect('/member'); 
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
   }
 });
 
+
 app.post("/auth/sign-up", async (req, res, next) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10); 
-    const user = new User({
-      username: req.body.username,
-      password: hashedPassword 
+    const { username, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      req.flash("passwordError", "Passwords do not match");
+      return res.redirect("/auth/sign-up");
+    }
+
+    const existingUser = await User.findOne({ username: username });
+    if (existingUser) {
+      req.flash("accountError", "Account already exists, please login");
+      return res.redirect("/auth/sign-up");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username: username,
+      password: hashedPassword,
     });
-    const result = await user.save();
+
+    await newUser.save();
     res.redirect("/auth/login");
-  } catch(err) {
+  } catch (err) {
     return next(err);
   }
 });

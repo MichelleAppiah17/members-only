@@ -10,7 +10,7 @@ router.get('/logout', (req,res) => {
 });
 
 router.get('/sign-up', (req,res) => {
-    res.render('sign-up');
+   res.render('sign-up', { messages: req.flash() });
 });
 
 

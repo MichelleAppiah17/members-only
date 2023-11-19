@@ -6,9 +6,14 @@
     <title>Members Only</title>
 </head>
      <style>
- body {
+        body {
             font-family: arial;
             margin: 0;
+        }
+        .container {
+            position: sticky;
+            top: 0;
+            z-index: 999;
         }
 
         .headerContainer {
@@ -18,6 +23,7 @@
             padding: 20px 30px;
             position: sticky;
             top: 0;
+            z-index: 999;
         }
 
         nav {
@@ -62,15 +68,13 @@
             cursor: pointer;
             position: sticky;
             top: 0;
-            z-index: 1000;
+             z-index: 999;
         }
 
         .newMessage a {
             text-decoration: none;
             color: white;
             font-weight: bold;
-            position: sticky;
-            top: 7%;
         }
 
         .newMessage a:hover {
@@ -127,20 +131,24 @@
         }    
     </style>
 <body>
-    <div class="headerContainer">
-        <h1>Members only</h1>
-        <nav>
-            <p class="link"><a href="/">Log out</a></p>
-        </nav>
-    </div>
-    <div class="welcome">
-        <% if (username) { %>
-            <p>Welcome back, <strong><%= username %></strong>
-            </p>
-            <% } else { %>
-                <p>Welcome back</p>
-                <% } %>
-        <button class="newMessage"><a href="/add-message" >+ New Message</a></button>
+    <div class="container">
+        <div class="headerContainer">
+            <h1>Members only</h1>
+            <nav>
+                <p class="link"><a href="/">Log out</a></p>
+            </nav>
+        </div>
+        <div class="welcome">
+            <% if (username) { %>
+                <p>Welcome back, <strong>
+                        <%= username %>
+                    </strong>
+                </p>
+                <% } else { %>
+                    <p>Welcome back</p>
+                    <% } %>
+                        <button class="newMessage"><a href="/add-message">+ New Message</a></button>
+        </div>
     </div>
     <div class="messagesDiv">
         <h1 class="main-header">
