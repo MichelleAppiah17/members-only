@@ -103,9 +103,9 @@ app.use(['/new-message', '/add-message', '/become-member', '/new-member-message'
 
 app.get('/', async (req, res) => {
     try {
-        const messages = await Message.find({}); 
+        const messages = await Message.find({}).sort({ added: -1 });
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
-        res.render('home', { title: 'Member Posts', messages: formattedMessages, isPasscodeCorrect });
+        res.render('home', { title: 'Member Posts', messages: messages, isPasscodeCorrect });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -115,10 +115,10 @@ app.get('/', async (req, res) => {
 
 app.get('/new-message', async (req, res) => {
     try {
-        const messages = await Message.find({}); 
+        const messages = await Message.find({}).sort({ added: -1 });
         const usernameData = req.user ? req.user.username : '';
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
-        res.render('newMessage', { title: 'Member Posts', messages: formattedMessages, username: usernameData, isPasscodeCorrect });
+        res.render('newMessage', { title: 'Member Posts', messages: messages, username: usernameData, isPasscodeCorrect });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -147,8 +147,8 @@ app.post('/become-member', (req, res) => {
 
 app.get('/member', authenticateAndCheckPasscode, async (req, res) => {
     try {
-        const messages = await Message.find({}).sort({ added: -1 }); 
-        const usernameData = req.user ? req.user.username : ''; 
+        const messages = await Message.find({}).sort({ added: -1 });
+        const usernameData = req.user ? req.user.username : '';
         const secretPasscode = process.env.SECRET_PASSCODE;
         const isPasscodeCorrect = req.session.isPasscodeCorrect || false;
 
@@ -156,7 +156,7 @@ app.get('/member', authenticateAndCheckPasscode, async (req, res) => {
             return {
                 user: message.user,
                 message: message.message,
-                added: message.added.toLocaleString() 
+                added: message.added instanceof Date ? message.added.toLocaleString() : message.added
             };
         });
 
